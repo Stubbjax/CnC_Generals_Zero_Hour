@@ -242,9 +242,7 @@ Bool SpectreGunshipDeploymentUpdate::initiateIntentToDoSpecialPower(const Specia
 
     // MAKE THE GUNSHIP SELECTED
 
-    TheGameLogic->selectObject( newGunship, TRUE, getObject()->getControllingPlayer()->getPlayerMask(), TRUE );
-
-
+	TheGameLogic->selectObject( newGunship, TRUE, getObject()->getControllingPlayer()->getPlayerMask(), getObject()->isLocallyControlled() );
   }
 
 
