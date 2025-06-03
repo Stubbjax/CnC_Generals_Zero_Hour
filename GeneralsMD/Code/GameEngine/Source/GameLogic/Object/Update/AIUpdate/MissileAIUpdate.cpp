@@ -517,6 +517,7 @@ void MissileAIUpdate::doAttackState(Bool turnOK)
 			curLoco->setMaxTurnRate(0);
 		}
 		tossExhaust();
+		return;
 	}
 	else
 	{
@@ -588,8 +589,9 @@ void MissileAIUpdate::doKillState(void)
 			return;
 		}
 
-		// srj sez: killstate missiles should not be allowed to live forever.
-		airborneTargetGone();
+		Object* obj = getObject();
+		obj->setStatus(MAKE_OBJECT_STATUS_MASK(OBJECT_STATUS_BRAKING), false);
+		switchToState(ATTACK);
 		return;
 	}
 
