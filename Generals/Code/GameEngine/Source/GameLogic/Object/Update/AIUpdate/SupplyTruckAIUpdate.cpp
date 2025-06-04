@@ -210,7 +210,7 @@ void SupplyTruckAIUpdate::privateDock( Object *dock, CommandSourceType cmdSource
 		// Please note, there is not a separate Warehouse and Center memory by Design.  Because
 		// we lack a UI way to click Warehouse and drag to center to set up a specific path, the
 		// practical realization has been made that you do not want separate memory.
-		m_preferredDock = dock->getID();
+		setPreferredDockID(dock->getID());
 	}
 }
 
@@ -530,6 +530,7 @@ StateReturnType SupplyTruckWantsToPickUpOrDeliverBoxesState::update()
 		if( bestWarehouse )
 		{
 			ownerAI->aiDock( bestWarehouse, CMD_FROM_AI );
+			update->setPreferredDockID(bestWarehouse->getID());
 			return STATE_SUCCESS;
 		}
 	}

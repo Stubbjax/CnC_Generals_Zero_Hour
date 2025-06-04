@@ -561,7 +561,7 @@ void WorkerAIUpdate::privateDock( Object *dock, CommandSourceType cmdSource )
 		// Please note, there is not a separate Warehouse and Center memory by Design.  Because
 		// we lack a UI way to click Warehouse and drag to center to set up a specific path, the
 		// practical realization has been made that you do not want separate memory.
-		m_preferredDock = dock->getID();
+		setPreferredDockID(dock->getID());
 	}
 }
 
@@ -623,7 +623,7 @@ void WorkerAIUpdate::newTask( DozerTask task, Object* target )
 	if( target == NULL )
 		return;
 
-	m_preferredDock = INVALID_ID; // If we are dozing, we don't want any supply truck stuff going on. jba.
+	setPreferredDockID(INVALID_ID); // If we are dozing, we don't want any supply truck stuff going on. jba.
 
 	//
 	// special check for the build task, we should never be given more than one of them ...

@@ -190,6 +190,7 @@ public:
 
 	virtual void setForceWantingState(Bool v){ m_forcePending = v; }
 	virtual Bool isForcedIntoWantingState() const { return m_forcePending; }
+	virtual void setPreferredDockID(ObjectID dock) { m_preferredDock = dock; }
 	virtual ObjectID getPreferredDockID() const { return m_preferredDock; }
 	virtual UnsignedInt getActionDelayForDock( Object *dock );
 

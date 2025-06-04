@@ -177,6 +177,7 @@ public:
 	virtual Bool isForcedIntoWantingState() const = 0;
 	virtual void setForceBusyState(Bool v) = 0;
 	virtual Bool isForcedIntoBusyState() const = 0;
+	virtual void setPreferredDockID(ObjectID dock) = 0;
 	virtual ObjectID getPreferredDockID() const = 0;
 	virtual UnsignedInt getActionDelayForDock( Object *dock ) = 0;
 	virtual Int getUpgradedSupplyBoost() const = 0;
@@ -215,6 +216,7 @@ public:
 	virtual void setForceBusyState(Bool v) { m_forcedBusyPending = v; } 
 	virtual Bool isForcedIntoBusyState() const { return m_forcedBusyPending; }
 
+	virtual void setPreferredDockID(ObjectID id) { m_preferredDock = id; }
 	virtual ObjectID getPreferredDockID() const { return m_preferredDock; }
 	virtual UnsignedInt getActionDelayForDock( Object *dock );
 	virtual Int getUpgradedSupplyBoost() const { return 0; }
