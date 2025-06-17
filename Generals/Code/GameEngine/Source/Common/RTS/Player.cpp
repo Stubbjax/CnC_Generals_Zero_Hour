@@ -1777,6 +1777,16 @@ void Player::transferAssetsFromThat(Player *that)
 		}
 	}
 
+	// transfer all his upgrades
+	UpgradeMaskType completedUpgradeMask = that->getCompletedUpgradeMask();
+	m_upgradesInProgress.clear(completedUpgradeMask);
+	m_upgradesCompleted.set(completedUpgradeMask);
+	onUpgradeCompleted(NULL);
+
+	// TODO: Update m_upgradeList with the transferred upgrades
+	// TODO: What happens to in-progress upgrades in the receiver's UI?
+	// TODO: Are in-progress upgrades refunded?
+
 	for (std::list<Object *>::iterator itObjs = objsToTransfer.begin(); itObjs != objsToTransfer.end(); ++itObjs) {
 		(*itObjs)->setTeam(defaultTeam);
 	}
