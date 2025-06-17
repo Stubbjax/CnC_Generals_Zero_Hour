@@ -2172,6 +2172,7 @@ void Player::transferAssetsFromThat(Player *that)
 
 	for (std::list<Object *>::iterator itObjs = objsToTransfer.begin(); itObjs != objsToTransfer.end(); ++itObjs) {
 		(*itObjs)->setTeam(defaultTeam);
+		(*itObjs)->updateUpgradeModules(); // Transferred assets acquire their new owner's upgrades
 	}
 
 	// transfer all his money
