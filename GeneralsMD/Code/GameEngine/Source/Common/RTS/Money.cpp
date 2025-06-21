@@ -51,6 +51,8 @@
 #include "Common/PlayerList.h"
 #include "Common/Xfer.h"
 
+const UnsignedInt CAPACITY = 999999999; // Restrict capacity to prevent overflowing at 0xFFFFFFFF
+
 // ------------------------------------------------------------------------------------------------
 UnsignedInt Money::withdraw(UnsignedInt amountToWithdraw, Bool playSound)
 {
@@ -78,6 +80,9 @@ void Money::deposit(UnsignedInt amountToDeposit, Bool playSound)
 {
 	if (amountToDeposit == 0)
 		return;
+
+	if (m_money + amountToDeposit > CAPACITY)
+		amountToDeposit = CAPACITY - m_money;
 
 	//@todo: Do we do this frequently enough that it is a performance hit?
 	AudioEventRTS event = TheAudio->getMiscAudio()->m_moneyDepositSound;
