@@ -126,7 +126,7 @@ void RebuildHoleBehavior::newWorkerRespawnProcess( Object *existingWorker )
 
 	// set the timer for the next worker respawn
 	m_workerWaitCounter = modData->m_workerRespawnDelay;
-
+#if RETAIL_COMPATIBLE_CRC
 	//
 	// this method is called when a worker needs to be respawned from the hole.  One of those
 	// situations is where the building was killed.  Since during building reconstruction
@@ -135,7 +135,7 @@ void RebuildHoleBehavior::newWorkerRespawnProcess( Object *existingWorker )
 	// "focus" of this small area again
 	//
 	getObject()->maskObject( FALSE );
-
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -276,13 +276,18 @@ UpdateSleepTime RebuildHoleBehavior::update( void )
 
 					// we want to prevent the player from selecting and doing things with this worker
 					worker->setStatus( MAKE_OBJECT_STATUS_MASK( OBJECT_STATUS_UNSELECTABLE ) );
-
+#if RETAIL_COMPATIBLE_CRC
 					//
 					// we want to prevent the player and the AI from selecting or targeting the hole
 					// cause the focus in this area (while reconstruction is happening) is the
 					// actual reconstructing building
 					//
+
+					// TheSuperHackers @bugfix Stubbjax 03/01/2026 Only mask the hole for retail compatibility.
+					// We do not want to mask the hole as it prevents players from directly targeting it when a
+					// stealthed scaffold is rebuilding.
 					hole->maskObject( TRUE );
+#endif
 
 					transferBombs( reconstructing );
 
