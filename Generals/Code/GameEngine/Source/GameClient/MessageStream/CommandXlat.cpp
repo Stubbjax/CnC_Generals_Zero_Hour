@@ -4981,6 +4981,9 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 		//-----------------------------------------------------------------------------
 		case GameMessage::MSG_META_DEBUG_WIN:
 		{
+			if (TheGameLogic->isInReplayGame())
+				break;
+
 			TheScriptEngine->debugVictory();
 
 			TheInGameUI->messageNoFormat( TheGameText->FETCH_OR_SUBSTITUTE("GUI:DebugWin", L"Instant Win") );
