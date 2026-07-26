@@ -1741,7 +1741,12 @@ Bool ActionManager::canDoSpecialPowerAtObject( const Object *obj, const Object *
 				if( target->isKindOf( KINDOF_VEHICLE )
 						&& !target->isKindOf( KINDOF_AIRCRAFT )
 						&& !target->isKindOf( KINDOF_BOAT )
-						&& !target->isKindOf( KINDOF_CLIFF_JUMPER ) )
+						&& !target->isKindOf( KINDOF_CLIFF_JUMPER )
+#if !RETAIL_COMPATIBLE_CRC
+						// TheSuperHackers @bugfix Stubbjax 26/07/2026 Drones are no longer a valid disguise.
+						&& !target->isKindOf( KINDOF_DRONE )
+#endif
+					)
 				{
 					//Don't allow it to disguise as another bomb truck -- that's just plain dumb.
 					//if( target->getTemplate() != obj->getTemplate() )
