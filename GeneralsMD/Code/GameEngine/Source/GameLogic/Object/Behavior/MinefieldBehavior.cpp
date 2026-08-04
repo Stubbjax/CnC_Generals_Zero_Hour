@@ -309,6 +309,14 @@ void MinefieldBehavior::detonateOnce(const Coord3D& position)
 
 			m_ignoreDamage = false;
 		}
+#if !RETAIL_COMPATIBLE_CRC
+		else
+		{
+			m_ignoreDamage = true;
+			getObject()->attemptHealing(-amount, getObject());
+			m_ignoreDamage = false;
+		}
+#endif
 	}
 
 	if (m_virtualMinesRemaining == 0)
@@ -458,10 +466,14 @@ void MinefieldBehavior::onDamage( DamageInfo *damageInfo )
 	for (;;)
 	{
 		Real virtualMinesExpectedF = ((Real)d->m_numVirtualMines * body->getHealth() / body->getMaxHealth());
+#if RETAIL_COMPATIBLE_CRC
 		Int virtualMinesExpected =
 			damageInfo->in.m_damageType == DAMAGE_HEALING ?
 			REAL_TO_INT_FLOOR(virtualMinesExpectedF) :
 			REAL_TO_INT_CEIL(virtualMinesExpectedF);
+#else
+		Int virtualMinesExpected = REAL_TO_INT_CEIL(virtualMinesExpectedF - WWMATH_EPSILON);
+#endif
 		if (virtualMinesExpected > d->m_numVirtualMines)
 			virtualMinesExpected = d->m_numVirtualMines;
 		if (m_virtualMinesRemaining < virtualMinesExpected)
