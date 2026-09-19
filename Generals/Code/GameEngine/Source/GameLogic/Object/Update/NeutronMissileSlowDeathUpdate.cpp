@@ -408,6 +408,30 @@ void NeutronMissileSlowDeathBehavior::doBlast( const BlastInfo *blastInfo )
 			other->topple( &forceVector, blastInfo->toppleSpeed, TOPPLE_OPTIONS_NO_BOUNCE |
 																													 TOPPLE_OPTIONS_NO_FX );
 
+#if !RETAIL_COMPATIBLE_CRC
+			// Grab the vector between the source object causing the damage and the victim in order that we can
+			// simulate a shockwave pushing objects around
+			damageInfo.in.m_shockWaveAmount = blastInfo->pushForceMag;
+			if (damageInfo.in.m_shockWaveAmount > 0.0f)
+			{
+				// Calculate the vector of the shockwave
+				Coord3D shockWaveVector = forceVector;
+
+				// Guard against zero vector. Make vector straight up if that is the case
+				if (fabs(shockWaveVector.x) < WWMATH_EPSILON &&
+					fabs(shockWaveVector.y) < WWMATH_EPSILON &&
+					fabs(shockWaveVector.z) < WWMATH_EPSILON)
+				{
+					shockWaveVector.z = 1.0f;
+				}
+
+				// Populate the damage information with the shockwave information
+				damageInfo.in.m_shockWaveVector = shockWaveVector;
+				damageInfo.in.m_shockWaveRadius = blastInfo->innerRadius;
+				damageInfo.in.m_shockWaveTaperOff = 1.0f;
+			}
+#endif
+
 			//
 			// compute how much damage we're going to do to this object ... if the object
 			// is inside the inner radius we do the full damage.  Outside of the inner radius
@@ -445,30 +469,6 @@ void NeutronMissileSlowDeathBehavior::doBlast( const BlastInfo *blastInfo )
 				}
 
 			}
-
-/*
-			// apply a small force to the object from the shockwave center
-			PhysicsBehavior *physics = other->getPhysics();
-			if( physics )
-			{
-				Coord3D physicsForce = forceVector;
-
-				// normalize the physics force
-				physicsForce.normalize();
-
-				//
-				// change the magnitude of the physics force to the force amount we want to apply from
-				// the shockwave
-				//
-				physicsForce.x *= blastInfo->pushForceMag;
-				physicsForce.y *= blastInfo->pushForceMag;
-				physicsForce.z *= blastInfo->pushForceMag;
-
-				// apply the force
-				physics->applyForce( &physicsForce );
-
-			}
-*/
 
 		}
 
